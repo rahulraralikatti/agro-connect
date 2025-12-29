@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AgroConnect</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{margin:0;font-family:Arial;background:#f2f6f2}
+.hidden{display:none}
+.card{background:#fff;padding:20px;margin:20px auto;max-width:900px;
+border-radius:12px;box-shadow:0 4px 10px rgba(0,0,0,0.1)}
+button{width:100%;padding:12px;margin-top:10px;
+background:#2e7d32;color:white;border:none;border-radius:8px;font-size:16px}
+button:hover{background:#1b5e20}
+input,select{width:100%;padding:10px;margin-top:5px;border-radius:6px;border:1px solid #ccc}
+header{
+background:url('https://images.unsplash.com/photo-1523348837708-15d4a09cfac2') center/cover;
+color:white;padding:50px;text-align:center}
+.error{color:red;font-size:14px}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>AgroConnect</h1>
+<p>Helping Farmers Lease Land Smartly</p>
+</header>
+
+<!-- LOGIN PAGE -->
+<div class="card" id="loginPage">
+<h2>Login</h2>
+
+<label>Mobile Number</label>
+<input type="tel" id="mobile">
+
+<label>Country</label>
+<input type="text" id="country">
+
+<label>Location</label>
+<input type="text" id="location">
+
+<label>Language</label>
+<select id="language">
+<option value="">Select</option>
+<option>English</option>
+<option>Hindi</option>
+<option>Kannada</option>
+<option>Telugu</option>
+<option>Tamil</option>
+</select>
+
+<p class="error" id="errorMsg"></p>
+
+<button onclick="login()">Login</button>
+</div>
+
+<!-- SERVICE PAGE -->
+<div class="card hidden" id="servicePage">
+<h2>Select Service</h2>
+<button onclick="openLand()">🌱 Land</button>
+<button onclick="openWeather()">🌦 Weather</button>
+<button onclick="openDisease()">🦠 Plant Diseases</button>
+<button onclick="goBack()" style="background:#757575">← Back</button>
+</div>
+
+<!-- LAND PAGE -->
+<div class="card hidden" id="landPage">
+<h2>Land Options</h2>
+<button onclick="openFarmer()">Farmer</button>
+<button onclick="openTaker()">Land Taker</button>
+<button onclick="backToService()" style="background:#757575">← Back</button>
+</div>
+
+<!-- FARMER FORM -->
+<div class="card hidden" id="farmerPage">
+<h2>Add Land for Lease</h2>
+<input type="file">
+<input type="text" placeholder="Land Location">
+<input type="number" placeholder="Area (Acres)">
+<select>
+<option>Black Soil</option>
+<option>Red Soil</option>
+<option>Sandy Soil</option>
+<option>Clay Soil</option>
+</select>
+<input type="number" placeholder="Humidity (%)">
+<input type="number" placeholder="Price per Acre">
+
+<select onchange="document.getElementById('water').style.display=this.value=='Yes'?'block':'none'">
+<option>No Borewell</option>
+<option>Yes</option>
+</select>
+
+<div id="water" style="display:none">
+<input type="number" placeholder="Water Level (Feet)">
+</div>
+
+<button>Submit</button>
+</div>
+
+<!-- LAND TAKER -->
+<div class="card hidden" id="takerPage">
+<h2>Available Lands</h2>
+<p>Farmer Name | Location | Price | Soil</p>
+</div>
+
+<!-- WEATHER -->
+<div class="card hidden" id="weatherPage">
+<h2>Weather Advice</h2>
+<input type="number" placeholder="Soil Moisture (%)">
+<input type="number" placeholder="Temperature (°C)">
+<input type="number" placeholder="Humidity (%)">
+<select>
+<option>Black Soil</option>
+<option>Red Soil</option>
+<option>Sandy Soil</option>
+</select>
+<button>Get Advice</button>
+<button onclick="backToService()" style="background:#757575">← Back</button>
+</div>
+
+<!-- DISEASE -->
+<div class="card hidden" id="diseasePage">
+<h2>Plant Disease Detection</h2>
+<input type="file" accept="image/*">
+<p>AI will analyze the leaf image</p>
+<button onclick="backToService()" style="background:#757575">← Back</button>
+</div>
+
+<!-- DISEASE -->
+ <div class="card hidden" id="homePage">
+<h2>Back</h2>
+<input type="file" accept="image/*">
+<p>AI will analyze the leaf image</p>
+</div>
+
+<script>
+let loggedIn = false;
+
+function login(){
+let mobile = document.getElementById("mobile").value;
+let country = document.getElementById("country").value;
+let location = document.getElementById("location").value;
+let language = document.getElementById("language").value;
+
+if(mobile=="" || country=="" || location=="" || language==""){
+document.getElementById("errorMsg").innerText = "Please fill all fields to continue";
+return;
+}
+
+loggedIn = true;
+loginPage.classList.add("hidden");
+servicePage.classList.remove("hidden");
+}
+
+function openLand(){
+if(!loggedIn) return;
+hideAll();
+landPage.classList.remove("hidden");
+}
+
+function openWeather(){
+if(!loggedIn) return;
+hideAll();
+weatherPage.classList.remove("hidden");
+}
+
+function openDisease(){
+if(!loggedIn) return;
+hideAll();
+diseasePage.classList.remove("hidden");
+}
+
+function openFarmer(){
+hideAll();
+farmerPage.classList.remove("hidden");
+}
+
+function openTaker(){
+hideAll();
+takerPage.classList.remove("hidden");
+}
+
+function hideAll(){
+servicePage.classList.add("hidden");
+landPage.classList.add("hidden");
+farmerPage.classList.add("hidden");
+takerPage.classList.add("hidden");
+weatherPage.classList.add("hidden");
+diseasePage.classList.add("hidden");
+}
+
+function goBack(){
+hideAll();
+loggedIn = false;
+loginPage.classList.remove("hidden");
+}
+
+function backToService(){
+hideAll();
+servicePage.classList.remove("hidden");
+}
+</script>
+
+</body>
+</html>
